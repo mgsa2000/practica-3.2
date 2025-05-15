@@ -1,0 +1,31 @@
+--- 
+- name: Configuracion de nfs server
+  hosts: frontend
+  become: yes
+
+  vars_files:
+    - ../vars/variables.yml
+
+  tasks:
+    - name: Install NFS client package
+      apt:
+        name: nfs-common
+        state: present
+        update_cache: yes
+
+    - name: Add NFS mount to /etc/fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "{{ nfs.NFS_SERVER_IP }}:/var/www/html /var/www/html nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0"
+        insertafter: "LABEL=UEFI"
+
+    - name: reiniciamos systemd daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: montar el NFS
+      mount:
+        path: /var/www/html
+        src: "{{ nfs.NFS_SERVER_IP }}:/var/www/html"
+        fstype: nfs
+        state: mounted

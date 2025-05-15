@@ -1,0 +1,84 @@
+--- 
+- name: Configuracion de wordpress
+  hosts: frontend
+  become: yes
+
+  vars_files:
+    - ../vars/variables.yml
+
+  tasks:
+    - name: Quitamos el wp-cli
+      file:
+        path: "/tmp/wp-cli.phar"
+        state: absent
+
+    - name: Descargamos el wp-cli
+      get_url:
+        url: "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
+        dest: "/tmp/wp-cli.phar"
+        mode: '0755'
+
+    - name: movemos el wp-cli a la carpeta wp
+      command: mv /tmp/wp-cli.phar /usr/local/bin/wp
+      args:
+        creates: /usr/local/bin/wp
+
+    - name: Creamos el directorio de wordpress
+      file:
+        path: "{{ wordpress.directory }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Descargamos wordpress
+      command: wp core download --locale=es_ES --path={{ wordpress.directory }} --allow-root
+
+    - name: Creamos el archivo de configuracion
+      command: wp config create --dbname={{ wordpress.db.name }} --dbuser={{ wordpress.db.user }} --dbpass={{ wordpress.db.password }} --dbhost={{ mysql.backend_ip1 }} --path={{ wordpress.directory }} --allow-root
+
+    - name: Install WordPress
+      command: wp core install --url={{ certbot.domain }} --title="{{ wordpress.titulo }}" --admin_user={{ wordpress.db.user }} --admin_password={{ wordpress.db.password }} --admin_email={{ certbot.email }} --path={{ wordpress.directory }} --allow-root
+
+    - name: Cambiamos el dueño a www-data
+      file:
+        path: "{{ wordpress.directory }}"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: Instalamos los temas
+      command: wp theme install mindscape --activate --path={{ wordpress.directory }} --allow-root
+
+    - name: Configuramos los linkspermanentes
+      command: wp rewrite structure '/%postname%/' --path={{ wordpress.directory }} --allow-root
+
+    - name: Instalamos los plugins de seguridad
+      command: wp plugin install wps-hide-login --activate --path={{ wordpress.directory }} --allow-root
+
+    - name: Ponemos la url privada
+      command: wp option update whl_page "{{ wordpress.hideurl }}" --path={{ wordpress.directory }} --allow-root
+
+    - name: Copiamos el htaccess
+      copy:
+        src: "../htaccess/.htaccess"
+        dest: "{{ wordpress.directory }}/.htaccess"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Habilitamos https en el directorio
+      lineinfile:
+        path: "{{ wordpress.directory }}/wp-config.php"
+        insertafter: "COLLATE"
+        line: "$_SERVER['HTTPS'] = 'on';"
+        state: present
+
+    - name: Cambiar el dueño a www-data de nuevo
+      file:
+        path: "{{ wordpress.directory }}"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data

@@ -1,0 +1,25 @@
+[frontend]
+13.219.218.1
+174.129.185.236
+
+
+
+
+[backend_ip]
+23.21.191.191
+
+
+
+[nfs_ip]
+18.214.8.13
+
+
+
+[loadbalancer_ip]
+3.234.12.215
+
+
+[all:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=/home/ubuntu/recuperacion2.pem
+ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new'

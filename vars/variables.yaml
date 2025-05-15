@@ -1,0 +1,30 @@
+FRONTEND_NETWORK: "172.31.%"
+IP_FRONTEND_1: "172.31.29.190"
+IP_FRONTEND_2: "172.31.25.104"
+
+
+certbot:
+  email: stratachan4@gmail.com
+  domain: miguel.zapto.org
+
+wordpress:
+  directory: "/var/www/html"
+  hideurl: "nombre_secreto"
+  titulo: "miguel"
+  db:
+    name: "miguel"
+    user: "miguel"
+    password: "miguel"
+
+mysql:
+  frontend_ip: "172.31.29.190"
+  frontend_ip2: "172.31.25.104"
+  backend_ip1: "172.31.26.94"
+
+nfs:
+  FRONTEND_NETWORK: "172.31.0.0/16"
+  NFS_SERVER_IP: "172.31.24.128"
+
+loadbalancer:
+  frontend_ip: "172.31.29.190"
+  frontend_ip2: "172.31.25.104"
