@@ -3,7 +3,7 @@
   hosts: frontend1,frontend2
   become: yes
   vars_files:
-    - ../vars/variables.yml
+    - /home/ubuntu/practica-3.2/vars/variables.yaml
   tasks:
     - name: Actualizar sistema
       apt:
