@@ -4,7 +4,7 @@
   become: yes
 
   vars_files:
-    - /home/ubuntu/practica-3.2/vars/variables.yaml
+    - ../vars/variables.yaml
 
   tasks:
 

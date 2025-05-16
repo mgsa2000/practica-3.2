@@ -3,7 +3,7 @@
   hosts: loadbalancer
   become: yes
   vars_files:
-    - /home/ubuntu/practica-3.2/vars/variables.yaml
+    - ../vars/variables.yaml
   tasks:
     - name: Actualizar sistema
       apt:
@@ -22,7 +22,7 @@
 
     - name: Copiar configuración de Nginx
       copy:
-        src: /home/ubuntu/practica-3.2/templates/load-balancer.conf
+        src: ../templates/load-balancer.conf
         dest: /etc/nginx/sites-available/loadbalancer.conf
 
     - name: Reemplazar valores en configuración de Nginx
