@@ -1,6 +1,6 @@
 ---
 - name: Configurar NFS Cliente
-  hosts: frontend1,frontend2
+  hosts: frontend
   become: yes
   vars_files:
     - ../vars/variables.yaml

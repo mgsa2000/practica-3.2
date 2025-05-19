@@ -1,6 +1,6 @@
 ---
 - name: Playbook para instalar la pila LAMP en el FrontEnd
-  hosts: frontend1
+  hosts: frotend_instalación
   become: yes
 
   vars_files:
@@ -133,7 +133,7 @@
         path: /var/www/html/wp-config.php
         line: "$_SERVER['HTTPS'] = 'on';"
         state: present
-        insertbefore: "^define\\( 'DB_NAME', 'wordpress' \\);"
+        insertbefore: "COLLATE"
 
     - name: Reiniciar el servidor web Apache
       service:

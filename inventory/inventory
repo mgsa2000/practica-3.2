@@ -1,11 +1,16 @@
-[frontend1]
+[frontend]
 172.31.29.190
-[frontend2]
 172.31.25.104
+
+[frotend_instalación]
+172.31.29.190
+
 [backend]
 172.31.26.94
+
 [loadbalancer]
 172.31.26.170
+
 [nfs_server]
 172.31.24.128
 

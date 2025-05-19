@@ -1,6 +1,6 @@
 ---
 - name: Playbook para instalar la pila LAMP en el FrontEnd
-  hosts: frontend1,frontend2
+  hosts: frontend
   become: yes
 
   tasks:
