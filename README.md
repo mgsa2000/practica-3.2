@@ -36,3 +36,7 @@ Configuracion de la pila LAMP para Frontend y Backend
 Una vez configurado el inventario podremos ejecutar el archivo main.yml,para tirar todos nuestros playbooks.
 
 ## comprobaciones.
+
+![](imagenes/111.png)
+![](imagenes/222.png)
+![](imagenes/333.png)
